@@ -19,6 +19,10 @@ if (! \function_exists('Waglpz\Route\groupByPrefix')) {
         array $methods = ['GET']
     ): void {
         if (isset($prefixes[$route])) {
+            if (! \is_array($prefixes[$route])) {
+                return;
+            }
+
             foreach (\array_keys($prefixes[$route]) as $hash) {
                 if (! \is_string($hash) || \strlen($hash) < 3) {
                     throw new \InvalidArgumentException('Ungültiger Hash Wert erwartet string.');

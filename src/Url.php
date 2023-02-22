@@ -59,7 +59,10 @@ class Url
                 }
 
                 if (! isset($routeArguments)) {
-                    if (\stripos($route, '[{' . \implode(':', $part) . '}]') !== false) {
+                    \assert(\is_array($part));
+                    $needle = '[{' . \implode(':', $part) . '}]';
+
+                    if (\stripos($route, $needle) !== false) {
                         break;
                     }
 
@@ -72,17 +75,25 @@ class Url
                     );
                 }
 
+                \assert(\is_array($part));
                 if (! \array_key_exists($part[0], $routeArguments)) {
                     $routeComponents  = [];
                     $routePlaceholder = \implode(':', $part);
                     break;
                 }
 
-                if (\preg_match('#' . $part[1] . '#', (string) $routeArguments[$part[0]]) !== 1) {
+                $subject = $routeArguments[$part[0]];
+                if (! \is_scalar($subject)) {
+                    $subject = '';
+                } else {
+                    $subject = (string) $subject;
+                }
+
+                if (\preg_match('#' . $part[1] . '#', $subject) !== 1) {
                     throw new \InvalidArgumentException(
                         \sprintf(
                             'Wert "%s" für Argument "%s" in der Route "%s" entspricht nicht den Pattern "%s".',
-                            $routeArguments[$part[0]],
+                            $subject,
                             $part[0],
                             $route,
                             $part[1]
