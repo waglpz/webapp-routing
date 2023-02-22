@@ -28,7 +28,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '7.4'
+        php-version: '8.2'
         coverage: pcov
         tools: composer:v2
 
@@ -36,13 +36,5 @@ jobs:
 #      if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --prefer-dist --no-progress --no-suggest
 
-
-
-    - name: Run code style check
-      run: composer run-script waglpz:cs-check
-      
-    - name: Run static analyser check
-      run: composer run-script waglpz:analyse
-      
-    - name: Run tests
-      run: composer run-script waglpz:test
+    - name: Run check
+      run: composer run-script waglpz:check:ci

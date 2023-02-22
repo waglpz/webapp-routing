@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace Waglpz\Route\Tests;
 
 use FastRoute\RouteCollector;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 use function Waglpz\Route\groupByPrefix;
 
 final class FunctionsTest extends TestCase
 {
-    /** @test */
+    /**
+     * @throws Exception
+     *
+     * @test
+     */
     public function groupWhenPrefixesAreEmpty(): void
     {
         $routeCollector = $this->createMock(RouteCollector::class);
@@ -23,7 +28,11 @@ final class FunctionsTest extends TestCase
         groupByPrefix('/test-route', \stdClass::class, $routeCollector, $prefixes);
     }
 
-    /** @test */
+    /**
+     * @throws Exception
+     *
+     * @test
+     */
     public function groupByPrefixes(): void
     {
         $routeCollector = $this->createMock(RouteCollector::class);
@@ -37,7 +46,11 @@ final class FunctionsTest extends TestCase
         groupByPrefix('/test-route', \stdClass::class, $routeCollector, $prefixes);
     }
 
-    /** @test */
+    /**
+     * @throws Exception
+     *
+     * @test
+     */
     public function throwInvalidArgumentExceptionWhenPrefixToShort(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -51,7 +64,11 @@ final class FunctionsTest extends TestCase
         groupByPrefix('/test-route', \stdClass::class, $routeCollector, $prefixes);
     }
 
-    /** @test */
+    /**
+     * @throws Exception
+     *
+     * @test
+     */
     public function throwInvalidArgumentExceptionWhenPrefixOfFalseType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
