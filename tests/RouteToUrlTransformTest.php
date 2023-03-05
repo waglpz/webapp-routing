@@ -66,7 +66,7 @@ final class RouteToUrlTransformTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Wert "b" für Argument "p" in der Route "/a/{p:\d}" entspricht nicht den Pattern "\d".'
+            'Wert "b" für Argument "p" in der Route "/a/{p:\d}" entspricht nicht den Pattern "\d".',
         );
         Url::forRoute('/a/{p:\d}', ['p' => 'b'], null, Url::RETAIN_NOT);
     }

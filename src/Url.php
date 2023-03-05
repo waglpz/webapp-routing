@@ -13,11 +13,8 @@ class Url
     public const RETAIN_HASH       = 0;
     public const HASH_ALGO         = 'crc32';
 
-    private string $webBase;
-
-    public function __construct(string $webBase)
+    public function __construct(private readonly string $webBase)
     {
-        $this->webBase = $webBase;
     }
 
     /**
@@ -26,9 +23,9 @@ class Url
      */
     public function __invoke(
         string $route,
-        ?array $routeArguments = null,
-        ?array $queryParams = null,
-        int $retainHash = self::RETAIN_HASH
+        array|null $routeArguments = null,
+        array|null $queryParams = null,
+        int $retainHash = self::RETAIN_HASH,
     ): string {
         return $this->webBase . self::forRoute($route, $routeArguments, $queryParams, $retainHash);
     }
@@ -39,9 +36,9 @@ class Url
      */
     public static function forRoute(
         string $route,
-        ?array $routeArguments = null,
-        ?array $queryParams = null,
-        int $retainHash = self::RETAIN_HASH
+        array|null $routeArguments = null,
+        array|null $queryParams = null,
+        int $retainHash = self::RETAIN_HASH,
     ): string {
         $query            = $queryParams !== null ? '?' . \http_build_query($queryParams) : '';
         $routeComponents  = [];
@@ -70,8 +67,8 @@ class Url
                         \sprintf(
                             'Argument "{%s}" für die Route "%s" wurde nicht angegeben.',
                             \implode(':', $part),
-                            $route
-                        )
+                            $route,
+                        ),
                     );
                 }
 
@@ -96,8 +93,8 @@ class Url
                             $subject,
                             $part[0],
                             $route,
-                            $part[1]
-                        )
+                            $part[1],
+                        ),
                     );
                 }
 
@@ -114,8 +111,8 @@ class Url
                 \sprintf(
                     'Ungültige Argumente für die Route "%s" angegeben: "%s".',
                     $route,
-                    $routePlaceholder
-                )
+                    $routePlaceholder,
+                ),
             );
         }
 

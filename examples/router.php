@@ -26,7 +26,7 @@ return static function (RouteCollector $router): void {
         ExampleRouteHandler::class,
         $router,
         $prefixes,
-        ['GET', 'POST']
+        ['GET', 'POST'],
     );
 
     /*
@@ -41,6 +41,6 @@ return static function (RouteCollector $router): void {
     $router->get(
         '/still-forbidden-test-route',
         new class {
-        }
+        },
     );
 };

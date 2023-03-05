@@ -15,8 +15,8 @@ if (! \function_exists('Waglpz\Route\groupByPrefix')) {
         string $route,
         string $handlerClass,
         RouteCollector $router,
-        ?array $prefixes,
-        array $methods = ['GET']
+        array|null $prefixes,
+        array $methods = ['GET'],
     ): void {
         if (isset($prefixes[$route])) {
             if (! \is_array($prefixes[$route])) {
