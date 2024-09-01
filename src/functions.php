@@ -30,7 +30,7 @@ if (! \function_exists('Waglpz\Route\groupByPrefix')) {
 
                 $router->addGroup(
                     $hash,
-                    static fn (RouteCollector $router) => $router->addRoute($methods, $route, $handlerClass)
+                    static fn (RouteCollector $router) => $router->addRoute($methods, $route, $handlerClass),
                 );
             }
         } else {
