@@ -37,9 +37,34 @@ return static function (RouteCollector $router): void {
     $router->addGroup(
         '/api',
         static function (RouteCollector $routeCollector): void {
+            $container  = \Waglpz\DiContainer\container();
+            $middleware = $container->get(RouteCollectorForMiddleware::class);
+            \assert($middleware instanceof RouteCollectorForMiddleware);
+            $middleware->setContainer($container);
+            $middleware->setWrappedRouteCollector($routeCollector);
+
             $routeCollector->get('/ping', Ping::class);
             $routeCollector->get('/doc', SwaggerUI::class);
             $routeCollector->get('/doc.json', SwaggerUI::class);
+
+            if (\APP_ENV === 'dev') {
+                $currentRouterCollector = $routeCollector;
+                if (! $container->has('$DefaultAuthStorage')) {
+                    throw new \Error('Container does not contains expected class ' . AuthStorage::class);
+                }
+
+                $authStorage = $container->get('$DefaultAuthStorage');
+                \assert($authStorage instanceof AuthStorage);
+                $authData = [
+                    'roles' => ['ROLE_RW'],
+                    'email' => 'developper+admin@gmail.com',
+                ];
+                $authStorage->assign($authData);
+            } else {
+                $currentRouterCollector = $middleware;
+            }
+
+            $currentRouterCollector->get(GetManyOpenVpnLogs::ROUTE, GetManyOpenVpnLogs::class);
         },
     );
     */
@@ -60,15 +85,20 @@ return static function (RouteCollector $router): void {
     $router->get('/login', Login::class);
     */
 
-    // Example Route definition
-    //$router->get(
-    //    '/', get_class((new class() {
-    //           public function __invoke(ServerRequestInterface $request): ResponseInterface
-    //           {
-    //               $response = new Response();
-    //               $response->getBody()->write('Hallo World ;)');
-    //                return  $response;
-    //           }
-    //       }))
-    //);
+    /*
+    *============================================*
+    | Example Route definition via anonyme class |
+    *============================================*
+
+    $router->get(
+        '/', get_class((new class() {
+               public function __invoke(ServerRequestInterface $request): ResponseInterface
+               {
+                   $response = new Response();
+                   $response->getBody()->write('Hallo World ;)');
+                    return  $response;
+               }
+           }))
+    );
+    */
 };
